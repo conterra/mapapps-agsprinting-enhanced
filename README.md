@@ -1,1 +1,109 @@
-# mapapps-agsprinting-enhanced
+# AGS Printing Enhanced
+The AGS Printing Enhanced Bundle extends the AGS Printing Bundle by further capabilities.
+AGS Printing documentation: https://developernetwork.conterra.de/en/documentation/mapapps/39/developers-documentation/ags-printing
+
+Sample App
+------------------
+https://demos.conterra.de/mapapps/resources/apps/downloads_agsprinting_enhanced/index.html
+
+Installation Guide
+------------------
+**Requirement: map.apps 3.8.0**
+**Requirement: ArcGIS Server 10.4**
+
+Simply add the bundle "dn_agsprintingenhanced" to your app.
+
+#### Configurable Components of dn_agsprintingenhanced:
+
+##### PrintDialogExtension:
+```
+"PrintDialogExtension": {
+    // hide the DPI selection
+    "hideDpiSelection": false,
+    // hide the scale checbox
+    "hideScaleCheckbox": false,
+    // add the help button to show a help widget
+    "addHelpButton": true,
+    // add the author textfield
+    "addAuthorField": true,
+    // mapping-table for adjusting the template names
+    "templateLabels": {
+        "MAP_ONLY": "Karte ohne Layout",
+        "A3 Landscape": "A3 Querformat"
+    },
+    // list of available printing scales -> leave this property out to take the scales from the basemaps LODs
+    "printScaleSelectOptions": [
+        {
+            "label": "1:1.000",
+            "value": 1000
+        },
+        {
+            "label": "1:5.000",
+            "value": 5000
+        },
+        {
+            "label": "1:10.000",
+            "value": 10000
+        },
+        {
+            "label": "1:25.000",
+            "value": 25000
+        },
+        {
+            "label": "1:50.000",
+            "value": 50000
+        },
+        {
+            "label": "1:100.000",
+            "value": 100000
+        },
+        {
+            "label": "1:250.000",
+            "value": 250000
+        },
+        {
+            "label": "1:500.000",
+            "value": 500000
+        },
+        {
+            "label": "1:1.000.000",
+            "value": 1000000
+        },
+        {
+            "label": "1:2.500.000",
+            "value": 2500000
+        },
+        {
+            "label": "1:5.000.000",
+            "value": 5000000
+        },
+        {
+            "label": "1:10.000.000",
+            "value": 10000000,
+            "selected": true
+        }
+    ]
+}
+```
+
+##### HelpWidgetFactory:
+```
+"HelpWidgetFactory": {
+    // define the help widget content
+    "content": "<div></div>"
+}
+```
+
+Development Guide
+------------------
+### Define the mapapps remote base
+Before you can run the project you have to define the mapapps.remote.base property in the pom.xml-file:
+`<mapapps.remote.base>http://%YOURSERVER%/ct-mapapps-webapp-%VERSION%</mapapps.remote.base>`
+
+##### Other methods to to define the mapapps.remote.base property.
+1. Goal parameters
+`mvn install -Dmapapps.remote.base=http://%YOURSERVER%/ct-mapapps-webapp-%VERSION%`
+
+2. Build properties
+Change the mapapps.remote.base in the build.properties file and run:
+`mvn install -Denv=dev -Dlocal.configfile=%ABSOLUTEPATHTOPROJECTROOT%/build.properties`

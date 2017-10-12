@@ -1,0 +1,239 @@
+{
+  "Bundle-SymbolicName": "dn_agsprintingenhanced",
+  "Bundle-Version": "1.0.0",
+  "Bundle-Name": "${bundleName}",
+  "Bundle-Description": "${bundleDescription}",
+  "Bundle-Vendor": "con terra GmbH",
+  "Bundle-Category": [
+    "print",
+    "AGS"
+  ],
+  "Bundle-Icon": {},
+  "Bundle-License": {},
+  "Require-Bundle": [
+    {
+      "name": "agsprinting",
+      "version": "^3.8.0"
+    },
+    {
+      "name": "map",
+      "version": "^3.8.0"
+    }
+  ],
+  "CSS-Themes-Extension": [
+    {
+      "name": "*",
+      "files": [
+        "./css/style.css"
+      ]
+    }
+  ],
+  "Product-Name": "map.apps",
+  "layout-widgets": [
+    {
+      "role": "printingHelp",
+      "window": {
+        "title": "${widgetTitle}",
+        "marginBox": {
+          "w": 300,
+          "h": 200
+        },
+        "minSize": {
+          "w": 300,
+          "h": 200
+        },
+        "dockTool": "printingHelpTool",
+        "closable": true,
+        "minimizeOnClose": true,
+        "resizable": true
+      }
+    }
+  ],
+  "Components": [
+    {
+      "name": "MapConnector",
+      "impl": "./MapConnector",
+      "provides": [],
+      "references": [
+        {
+          "name": "mapState",
+          "providing": "ct.mapping.map.MapState"
+        },
+        {
+          "name": "printDialog",
+          "providing": "agsprinting.PrintDialog"
+        },
+        {
+          "name": "printController",
+          "providing": "agsprinting.PrintController"
+        },
+        {
+          "name": "printPreviewRenderer",
+          "providing": "dn_agsprintingenhanced.printpreview.PrintPreviewRenderer"
+        }
+      ]
+    },
+    {
+      "name": "PrintPreviewRenderer",
+      "impl": "./PrintPreviewRenderer",
+      "provides": [
+        "dn_agsprintingenhanced.printpreview.PrintPreviewRenderer"
+      ],
+      "references": [
+        {
+          "name": "mapModel",
+          "providing": "ct.mapping.map.MapModel"
+        },
+        {
+          "name": "printPreviewGraphicsBuilderFactory",
+          "providing": "dn_agsprintingenhanced.printpreview.PrintPreviewGraphicsBuilderFactory"
+        }
+      ]
+    },
+    {
+      "name": "PrintPreviewGraphicsBuilderFactory",
+      "impl": "./PrintPreviewGraphicsBuilderFactory",
+      "provides": [
+        "dn_agsprintingenhanced.printpreview.PrintPreviewGraphicsBuilderFactory"
+      ]
+    },
+    {
+      "name": "PrintPreviewEditor",
+      "impl": "./PrintPreviewEditor",
+      "references": [
+        {
+          "name": "mapState",
+          "providing": "ct.mapping.map.MapState"
+        },
+        {
+          "name": "editStateController",
+          "providing": "ct.mapping.edit.EditStateController"
+        },
+        {
+          "name": "printPreviewRenderer",
+          "providing": "dn_agsprintingenhanced.printpreview.PrintPreviewRenderer"
+        }
+      ]
+    },
+    {
+      "name": "PrintPreviewWidgetControllerExtension",
+      "impl": "./PrintPreviewWidgetControllerExtension",
+      "provides": [
+      ],
+      "properties": {
+      },
+      "references": [
+      ]
+    },
+    {
+      "name": "PrintDialogExtension",
+      "provides": [],
+      "properties": {
+        "hideDpiSelection": false,
+        "hideScaleCheckbox": false,
+        "addHelpButton": false,
+        "addAuthorField": false,
+        "templateLabels": {
+          "MAP_ONLY": "Karte ohne Layout"
+        },
+        "defaultPrintScaleSelectOptions": [
+          {
+            "label": "1:1.000",
+            "value": 1000
+          },
+          {
+            "label": "1:5.000",
+            "value": 5000
+          },
+          {
+            "label": "1:10.000",
+            "value": 10000
+          },
+          {
+            "label": "1:25.000",
+            "value": 25000
+          },
+          {
+            "label": "1:50.000",
+            "value": 50000
+          },
+          {
+            "label": "1:100.000",
+            "value": 100000
+          },
+          {
+            "label": "1:250.000",
+            "value": 250000
+          },
+          {
+            "label": "1:500.000",
+            "value": 500000
+          },
+          {
+            "label": "1:1.000.000",
+            "value": 1000000
+          },
+          {
+            "label": "1:2.500.000",
+            "value": 2500000
+          },
+          {
+            "label": "1:5.000.000",
+            "value": 5000000
+          },
+          {
+            "label": "1:10.000.000",
+            "value": 10000000
+          }
+        ]
+      },
+      "references": [
+        {
+          "name": "_mapModel",
+          "providing": "ct.mapping.map.MapModel"
+        },
+        {
+          "name": "_printDialog",
+          "providing": "agsprinting.PrintDialog"
+        },
+        {
+          "name": "_helpTool",
+          "providing": "ct.tools.Tool",
+          "filter": "(id=printingHelpTool)",
+          "cardinality": "0..1"
+        }
+      ]
+    },
+    {
+      "name": "HelpWidgetFactory",
+      "provides": [
+        "dijit.Widget",
+        "ct.framework.api.EventHandler"
+      ],
+      "properties": {
+        "widgetRole": "printingHelp",
+        "content": "<div>Printing</div>"
+      },
+      "instanceFactory": true,
+      "immediate": true,
+      "references": [
+      ]
+    },
+    {
+      "name": "PrintingHelpTool",
+      "impl": "ct/tools/Tool",
+      "provides": [
+        "ct.tools.Tool"
+      ],
+      "propertiesConstructor": true,
+      "properties": {
+        "id": "printingHelpTool",
+        "toolRole": "",
+        "title": "${toolName}",
+        "tooltip": "${toolTooltip}",
+        "togglable": false,
+        "iconClass": "icon-print"
+      }
+    }
+  ]
+}
