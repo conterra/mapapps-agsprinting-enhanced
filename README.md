@@ -1,8 +1,15 @@
 # AGS Printing Enhanced
-The AGS Printing Enhanced Bundle extends the AGS Printing Bundle by further capabilities. You are now able to enter an author to de the document and define a scale.
+The AGS Printing Enhanced Bundle extends the AGS Printing Bundle by further capabilities. You are now able to enter an author to the document and define a scale.
 AGS Printing documentation: https://developernetwork.conterra.de/en/documentation/mapapps/39/developers-documentation/ags-printing
 
 ![alt text](https://github.com/conterra/mapapps-agsprinting-enhanced/blob/master/printDialog.JPG)
+
+
+![alt text](https://github.com/conterra/mapapps-agsprinting-enhanced/blob/master/SamplePrinting.JPG)
+
+
+![alt text](https://github.com/conterra/mapapps-agsprinting-enhanced/blob/master/samplePrint.JPG)
+
 
 Sample App
 ------------------
