@@ -5,7 +5,7 @@ AGS Printing documentation: https://developernetwork.conterra.de/en/documentatio
 ![alt text](https://github.com/conterra/mapapps-agsprinting-enhanced/blob/master/printDialog.JPG)
 
 
-![alt text](https://github.com/conterra/mapapps-agsprinting-enhanced/blob/master/SamplePrinting.JPG)
+![alt text](https://github.com/conterra/mapapps-agsprinting-enhanced/blob/master/SamplePrinting.JPG){:height="700px" width="400px"}
 
 
 ![alt text](https://github.com/conterra/mapapps-agsprinting-enhanced/blob/master/samplePrint.jpg)
