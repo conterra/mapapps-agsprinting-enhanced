@@ -18,7 +18,7 @@ https://demos.conterra.de/mapapps/resources/apps/downloads_agsprinting_enhanced/
 Installation Guide
 ------------------
 **Requirements:**
-- map.apps 3.8.0 or later
+- map.apps 3.9.0 or later
 - ArcGIS Server 10.4 or later
 
 Simply add the bundle "dn_agsprintingenhanced" to your app.

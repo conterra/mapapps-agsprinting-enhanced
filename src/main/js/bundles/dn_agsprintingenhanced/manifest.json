@@ -13,11 +13,11 @@
   "Require-Bundle": [
     {
       "name": "agsprinting",
-      "version": "^3.8.0"
+      "version": "^3.9.0"
     },
     {
       "name": "map",
-      "version": "^3.8.0"
+      "version": "^3.9.0"
     }
   ],
   "CSS-Themes-Extension": [
