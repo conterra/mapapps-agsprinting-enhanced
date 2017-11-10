@@ -175,7 +175,10 @@ define([
             var baselayer = ct_array.arraySearchFirst(baselayers, {
                 visibleInMap: true
             });
-            var baseMapUrl = baselayer.service.serviceUrl;
+            var baseMapUrl = baselayer.service && baselayer.service.serviceUrl;
+            if (!baseMapUrl) {
+                return null;
+            }
             return apprt_request(baseMapUrl, {
                 "query": {
                     "f": "json"
