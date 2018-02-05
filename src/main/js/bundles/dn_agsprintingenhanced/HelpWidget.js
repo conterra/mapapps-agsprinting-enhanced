@@ -24,7 +24,7 @@ define([
              _WidgetsInTemplateMixin) {
     return declare([_Widget, _TemplatedMixin, _WidgetsInTemplateMixin], {
         templateString: "",
-        baseClass: "starnbergPrintingHelpWidget",
+        baseClass: "helpWidget",
 
         postCreate: function () {
             // run any parent postCreate processes
