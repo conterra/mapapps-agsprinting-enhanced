@@ -29,7 +29,6 @@
   "bundles": {
     "agsprinting": {
       "PrintController": {
-        "url": "https://services.conterra.de/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
         "directDownload": false,
         "hideFormats": [
           "SVGZ",
