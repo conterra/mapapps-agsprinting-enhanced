@@ -33,7 +33,7 @@
     {
       "role": "printingHelp",
       "window": {
-        "title": "${widgetTitle}",
+        "title": "${ui.widgetTitle}",
         "marginBox": {
           "w": 300,
           "h": 200
