@@ -1,6 +1,7 @@
 {
   "properties": {
-    "amdPackages": "apprt@^3.x"
+    "amdPackages": "apprt@^3.x",
+    "title": "AGS Printing Enhanced Sample App"
   },
   "load": {
     "bundleLocations": [
@@ -122,7 +123,7 @@
         ]
       },
       "HelpWidgetFactory": {
-        "content": "<div></div>"
+        "content": "<div>Hier kann ein vordefinierter Text stehen.</div>"
       }
     },
     "banner": {
