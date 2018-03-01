@@ -37,7 +37,7 @@ define([
                 },
 
                 showDefaultGraphics: function (printPreview) {
-                    var graphics = this._getGraphicsBuilder(printPreview).buildDefaultGraphics();
+                    var graphics = this._getGraphicsBuilder(printPreview).buildDefaultGraphics(this._properties.enableUprightDirectionIndicatorGraphic);
                     return this._showGraphics(printPreview, graphics);
                 },
 
@@ -55,7 +55,7 @@ define([
                 },
 
                 showInactiveGraphics: function (printPreview) {
-                    var graphics = this._getGraphicsBuilder(printPreview).buildInactiveStateGraphics();
+                    var graphics = this._getGraphicsBuilder(printPreview).buildInactiveStateGraphics(this._properties.enableUprightDirectionIndicatorGraphic);
                     return this._showGraphics(printPreview, graphics);
                 },
 

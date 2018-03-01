@@ -79,6 +79,9 @@
       "provides": [
         "dn_agsprintingenhanced.printpreview.PrintPreviewRenderer"
       ],
+      "properties": {
+        "enableUprightDirectionIndicatorGraphic": true
+      },
       "references": [
         {
           "name": "mapModel",

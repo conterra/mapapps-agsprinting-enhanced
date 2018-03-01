@@ -121,6 +121,9 @@
           }
         ]
       },
+      "PrintPreviewRenderer": {
+        "enableUprightDirectionIndicatorGraphic": true
+      },
       "HelpWidgetFactory": {
         "content": "<div>Hier kann ein vordefinierter Text stehen.</div>"
       }

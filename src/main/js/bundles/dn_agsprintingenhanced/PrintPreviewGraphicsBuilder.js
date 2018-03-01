@@ -128,18 +128,30 @@ define([
                     d_lang.mixin(this, params);
                 },
 
-                buildDefaultGraphics: function () {
-                    return [
-                        this._getMainFrameGraphic(),
-                        this._getUprightDirectionIndicatorGraphic()
-                    ];
+                buildDefaultGraphics: function (enableUprightDirectionIndicatorGraphic) {
+                    if (enableUprightDirectionIndicatorGraphic) {
+                        return [
+                            this._getMainFrameGraphic(),
+                            this._getUprightDirectionIndicatorGraphic()
+                        ];
+                    } else {
+                        return [
+                            this._getMainFrameGraphic()
+                        ];
+                    }
                 },
 
-                buildInactiveStateGraphics: function () {
-                    return [
-                        this._getInactiveStateGraphics(),
-                        this._getUprightDirectionIndicatorGraphic()
-                    ];
+                buildInactiveStateGraphics: function (enableUprightDirectionIndicatorGraphic) {
+                    if (enableUprightDirectionIndicatorGraphic) {
+                        return [
+                            this._getInactiveStateGraphics(),
+                            this._getUprightDirectionIndicatorGraphic()
+                        ];
+                    } else {
+                        return [
+                            this._getInactiveStateGraphics()
+                        ];
+                    }
                 },
 
                 _getMainFrameGraphic: function () {

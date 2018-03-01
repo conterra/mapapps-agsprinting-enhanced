@@ -96,6 +96,14 @@ Simply add the bundle "dn_agsprintingenhanced" to your app.
 }
 ```
 
+##### PrintPreviewRenderer:
+```
+"PrintPreviewRenderer": {
+    // enable or disable the upright direction indicator graphic
+    "enableUprightDirectionIndicatorGraphic": true
+}
+```
+
 ##### HelpWidgetFactory:
 ```
 "HelpWidgetFactory": {
