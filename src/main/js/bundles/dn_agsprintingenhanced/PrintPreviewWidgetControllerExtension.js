@@ -41,6 +41,7 @@ define([
             this.connect(this._printDialog.rotationSpinner, "onChange", this.changeRotation);
             this.connect(this._printDialog.templateCheckbox, "onChange", this.drawTemplateDimensions);
             this.connect(this._printDialog.scaleSelect, "onChange", this.drawTemplateDimensions);
+            this.connect(this._printDialog, "populateGUI", this.drawTemplateDimensions);
             this.connect(this._agsPrintTool, "onActivate", this.drawTemplateDimensions);
             this.connect(this._agsPrintTool, "onDeactivate", this.hideWidget);
         },

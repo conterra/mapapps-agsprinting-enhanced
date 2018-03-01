@@ -36,7 +36,7 @@
           "SVG"
         ],
         "hideTemplates": [
-          "Test"
+          "MAP_ONLY"
         ],
         "unitTemplatesMapping": {
           "esriInches": [
