@@ -8,8 +8,7 @@
     "print",
     "AGS"
   ],
-  "Bundle-Icon": {},
-  "Bundle-License": {},
+  "Product-Name": "devnet-mapapps-agsprinting-enhanced",
   "Require-Bundle": [
     {
       "name": "agsprinting",
@@ -28,7 +27,6 @@
       ]
     }
   ],
-  "Product-Name": "map.apps",
   "layout-widgets": [
     {
       "role": "printingHelp",
