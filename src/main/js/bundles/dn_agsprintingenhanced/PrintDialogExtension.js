@@ -175,7 +175,7 @@ define([
             var baselayer = ct_array.arraySearchFirst(baselayers, {
                 visibleInMap: true
             });
-            var baseMapUrl = baselayer.service && baselayer.service.serviceUrl;
+            var baseMapUrl = baselayer && baselayer.service && baselayer.service.serviceUrl;
             if (!baseMapUrl) {
                 return null;
             }
