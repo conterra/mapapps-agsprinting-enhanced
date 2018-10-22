@@ -26,8 +26,9 @@ define([
             printPreviewWidgetController.prototype.activate = this.newActivate;
             printPreviewWidgetController.prototype.showWidget = this.showWidget;
             printPreviewWidgetController.prototype.hideWidget = this.hideWidget;
-            printPreviewWidgetController.prototype._getPrintSize = this._getPrintSize;
             printPreviewWidgetController.prototype.drawTemplateDimensions = this.drawTemplateDimensions;
+            printPreviewWidgetController.prototype._getTemplateInfos = this._getTemplateInfos;
+            printPreviewWidgetController.prototype._getPrintSize = this._getPrintSize;
             printPreviewWidgetController.prototype._connectToMethods = this._connectToMethods;
         },
 
@@ -39,7 +40,11 @@ define([
             that._connectToMethods();
 
             this.connect(that._agsPrintTool, "onActivate", function () {
-                that.drawTemplateDimensions(false);
+                if (that._printDialog.scaleSelect.value === -1) {
+                    that.drawTemplateDimensions(true);
+                } else {
+                    that.drawTemplateDimensions(false);
+                }
                 that._connectToMethods();
             });
             this.connect(that._agsPrintTool, "onDeactivate", function () {
@@ -65,8 +70,8 @@ define([
             that.con.connect(that._printDialog.scaleNode, "onChange", function () {
                 that.drawTemplateDimensions(false);
             });
-            that.con.connect(that._printDialog.rotationSpinner, "onChange", function () {
-                that.changeRotation();
+            that.con.connect(that._printDialog.rotationSpinner, "onChange", function (rotation) {
+                that.changeRotation(rotation);
             });
             that.con.connect(that._printDialog.templateCheckbox, "onChange", function () {
                 that.drawTemplateDimensions(false);
@@ -99,7 +104,7 @@ define([
         hideWidget: function () {
         },
 
-        changeRotation: function () {
+        changeRotation: function (rotation) {
         },
 
         _getPrintSize: function (template, templateInfos) {
@@ -140,7 +145,7 @@ define([
 
         drawTemplateDimensions: function (noZoom) {
             var printDialog = this._printDialog;
-            if (!this._printController._templateInfos) {
+            if (!this._getTemplateInfos()) {
                 return;
             }
             var template = printDialog.Layout_Template.get("value");
@@ -150,7 +155,7 @@ define([
             }
 
             var scale = printDialog.scaleSelect.get("value");
-            var templateInfos = ct_array.arraySearchFirst(this._printController._templateInfos, {
+            var templateInfos = ct_array.arraySearchFirst(this._getTemplateInfos(), {
                 layoutTemplate: template
             });
             var printSize = this._getPrintSize(template, templateInfos);
@@ -165,6 +170,10 @@ define([
             };
 
             this.showWidget(widgetParams, noZoom);
+        },
+
+        _getTemplateInfos: function () {
+            return this._printController._templateInfos || this._printController.getPrintInfos().templateInfos
         }
     });
 });

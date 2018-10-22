@@ -19,6 +19,7 @@ define([
     "./PrintPreviewEditor",
     "./PrintPreviewGraphicsBuilderFactory",
     "./PrintPreviewWidgetControllerExtension",
+    "./PrintControllerExtension",
     "./PrintDialogExtension",
     "./HelpWidgetFactory",
     "./MapConnector"

@@ -27,9 +27,10 @@ define([
         "esri/geometry/Polyline",
         "esri/geometry/webMercatorUtils",
         "esri/geometry/geodesicUtils",
+        "esri/tasks/PrintTask",
         "agsprinting/PrintPreviewWidgetController"
     ],
-    function (declare, d_lang, d_aspect, _Connect, ct_lang, ct_css, geometry, PrintPreview, esri_config, esri_units, Polyline, webMercatorUtils, geodesicUtils, PrintPreviewWidgetController) {
+    function (declare, d_lang, d_aspect, _Connect, ct_lang, ct_css, geometry, PrintPreview, esri_config, esri_units, Polyline, webMercatorUtils, geodesicUtils, PrintTask, PrintPreviewWidgetController) {
         return declare([_Connect],
             {
                 mapState: null,
@@ -54,19 +55,8 @@ define([
                         this.remove();
                     });
 
-                    var printController = this.printController;
-                    var printDefFunction = "_getPrintDefinition";
-                    d_aspect.after(printController._printTask, printDefFunction, d_lang.hitch(this, function (mapPrintDef) {
-                        var latestPrintPreview = this.getLatestPrintPreview();
-                        if (latestPrintPreview) {
-                            mapPrintDef.mapOptions.extent = latestPrintPreview.extent;
-                            mapPrintDef.mapOptions.scale = latestPrintPreview.scale;
-                            mapPrintDef.mapOptions.rotation = latestPrintPreview.rotation;
-                        }
-                        return mapPrintDef;
-                    }));
-
                     var that = this;
+                    var printController = this.printController;
                     d_aspect.before(printController, "print", function () {
                         that.hideAllBeforePrinting();
                     });
@@ -112,6 +102,7 @@ define([
                 },
 
                 getLatestPrintPreview: function () {
+                    this.printController._rotation = this._latestPrintPreview.rotation;
                     return this._latestPrintPreview;
                 },
 
@@ -145,7 +136,7 @@ define([
                 },
 
                 remove: function () {
-                    this._latestPrintPreview = null;
+                    //this._latestPrintPreview = null;
                     this.printPreviewRenderer.remove();
                 },
 

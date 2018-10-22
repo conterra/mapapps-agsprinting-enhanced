@@ -51,7 +51,9 @@
     {
       "name": "MapConnector",
       "impl": "./MapConnector",
-      "provides": [],
+      "provides": [
+        "dn_agsprintingenhanced.printpreview.MapConnector"
+      ],
       "references": [
         {
           "name": "mapState",
@@ -118,13 +120,19 @@
     },
     {
       "name": "PrintPreviewWidgetControllerExtension",
-      "impl": "./PrintPreviewWidgetControllerExtension",
-      "provides": [
-      ],
-      "properties": {
-      },
+      "impl": "./PrintPreviewWidgetControllerExtension"
+    },
+    {
+      "name": "PrintControllerExtension",
+      "impl": "./PrintControllerExtension",
       "references": [
-      ]
+        {
+          "name": "mapConnector",
+          "providing": "dn_agsprintingenhanced.printpreview.MapConnector",
+          "cardinality": "0..1"
+        }
+      ],
+      "immediate": true
     },
     {
       "name": "PrintDialogExtension",
