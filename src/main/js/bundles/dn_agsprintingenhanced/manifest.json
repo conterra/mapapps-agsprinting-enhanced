@@ -103,6 +103,15 @@
     {
       "name": "PrintPreviewEditor",
       "impl": "./PrintPreviewEditor",
+      "properties": {
+        "saveAfterMove": false,
+        "editModes": [
+          [
+            "ROTATE",
+            "MOVE"
+          ]
+        ]
+      },
       "references": [
         {
           "name": "mapState",

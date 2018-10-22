@@ -99,17 +99,25 @@ define([
                 },
 
                 _startEditing: function (printPreview, graphic) {
+                    var that = this;
+                    if (this._properties.saveAfterMove) {
+                        var con = this.connect(graphic.getNode(), "click", function () {
+                            that._stopEditing(printPreview);
+                            that._editedPrintPreview = null;
+                            con.disconnect();
+                        });
+                    }
                     var editStateController = this.editStateController;
                     var renderer = this.printPreviewRenderer;
 
                     editStateController.activateEditing({
-                        editModes: [['ROTATE', 'MOVE']]
+                        editModes: this._properties.editModes
                     });
                     graphic.setSymbol(jsonUtils.fromJson(this.editingSymbol));
 
                     editStateController.editGraphic({graphic: graphic});
                     this._editedGraphic = graphic;
-                    renderer.showEditingGraphics(printPreview);
+                    renderer.showEditingGraphics();
                 },
 
                 _stopEditing: function (printPreview) {
