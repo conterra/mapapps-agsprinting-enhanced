@@ -56,8 +56,9 @@ define([
 
             var defaultUnit = this._printController._properties.defaultUnit;
             var unitTemplatesMapping = this._printController._properties.unitTemplatesMapping;
-            var printWidth = templateInfos.activeDataFrameSize[0];
-            var printHeight = templateInfos.activeDataFrameSize[1];
+            var frameSize = templateInfos.activeDataFrameSize || templateInfos.webMapFrameSize;
+            var printWidth = frameSize[0];
+            var printHeight = frameSize[1];
             var mapSize = this._mapState.getSize();
             var mapWidth = mapSize.width;
             var mapHeight = mapSize.height;
