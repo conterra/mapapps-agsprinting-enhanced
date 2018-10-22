@@ -149,8 +149,7 @@ define([
             var select = this._printDialog.scaleSelect = new Select({
                 options: [{
                     label: i18n.ui.currentScale,
-                    value: -1,
-                    selected: true
+                    value: -1
                 }],
                 name: "scaleSelect",
                 style: "margin-left: 2px;"

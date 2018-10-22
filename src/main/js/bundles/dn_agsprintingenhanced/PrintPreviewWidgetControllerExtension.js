@@ -28,6 +28,7 @@ define([
             printPreviewWidgetController.prototype.hideWidget = this.hideWidget;
             printPreviewWidgetController.prototype._getPrintSize = this._getPrintSize;
             printPreviewWidgetController.prototype.drawTemplateDimensions = this.drawTemplateDimensions;
+            printPreviewWidgetController.prototype._connectToMethods = this._connectToMethods;
         },
 
         newActivate: function (componentContext) {
@@ -35,46 +36,60 @@ define([
             this.inherited(arguments);
             this._bundleContext = componentContext.getBundleContext();
 
-            if (this._printDialog.scaleSelect.value === -1) {
-                this.connect("zoomConnect", this._mapState, "onZoomEnd", function (scale) {
+            that._connectToMethods();
+
+            this.connect(that._agsPrintTool, "onActivate", function () {
+                that.drawTemplateDimensions(false);
+                that._connectToMethods();
+            });
+            this.connect(that._agsPrintTool, "onDeactivate", function () {
+                that.hideWidget();
+                that.con.disconnect();
+            });
+        },
+
+        _connectToMethods: function () {
+            var that = this;
+            this.con = new _Connect();
+            if (that._printDialog.scaleSelect.value === -1) {
+                that.con.connect("zoomConnect", that._mapState, "onZoomEnd", function (scale) {
                     setTimeout(function () {
                         that.drawTemplateDimensions(true);
                     }, 500);
                 });
             }
 
-            this.connect(this._printDialog.Layout_Template, "onChange", function () {
-                this.drawTemplateDimensions(false);
+            that.con.connect(that._printDialog.Layout_Template, "onChange", function () {
+                that.drawTemplateDimensions(false);
             });
-            this.connect(this._printDialog.scaleNode, "onChange", function () {
-                this.drawTemplateDimensions(false);
+            that.con.connect(that._printDialog.scaleNode, "onChange", function () {
+                that.drawTemplateDimensions(false);
             });
-            this.connect(this._printDialog.rotationSpinner, "onChange", function () {
-                this.changeRotation();
+            that.con.connect(that._printDialog.rotationSpinner, "onChange", function () {
+                that.changeRotation();
             });
-            this.connect(this._printDialog.templateCheckbox, "onChange", function () {
-                this.drawTemplateDimensions(false);
+            that.con.connect(that._printDialog.templateCheckbox, "onChange", function () {
+                that.drawTemplateDimensions(false);
             });
-            this.connect(this._printDialog.scaleSelect, "onChange", function (value) {
+            that.con.connect(that._printDialog.scaleSelect, "onChange", function (value) {
                 if (value === -1) {
-                    this.connect("zoomConnect", this._mapState, "onZoomEnd", function (scale) {
+                    that.con.connect("zoomConnect", that._mapState, "onZoomEnd", function (scale) {
                         setTimeout(function () {
                             that.drawTemplateDimensions(true);
                         }, 500);
                     });
+                    that.drawTemplateDimensions(true);
                 } else {
-                    this.disconnect("zoomConnect");
+                    that.drawTemplateDimensions();
+                    that.con.disconnect("zoomConnect");
                 }
-                this.drawTemplateDimensions();
             });
-            this.connect(this._printDialog, "populateGUI", function () {
-                this.drawTemplateDimensions(false);
-            });
-            this.connect(this._agsPrintTool, "onActivate", function () {
-                this.drawTemplateDimensions(false);
-            });
-            this.connect(this._agsPrintTool, "onDeactivate", function () {
-                this.hideWidget();
+            that.con.connect(that._printDialog, "populateGUI", function () {
+                if (that._printDialog.scaleSelect.value === -1) {
+                    that.drawTemplateDimensions(true);
+                } else {
+                    that.drawTemplateDimensions(false);
+                }
             });
         },
 
@@ -102,8 +117,9 @@ define([
                 var factor = this._getFactor(defaultUnit);
                 for (var unit in unitTemplatesMapping) {
                     var search = ct_array.arrayFirstIndexOf(unitTemplatesMapping[unit], template);
-                    if (search !== -1)
+                    if (search !== -1) {
                         factor = this._getFactor(unit);
+                    }
                 }
                 printSize.width = (printWidth / factor);
                 printSize.height = (printHeight / factor);

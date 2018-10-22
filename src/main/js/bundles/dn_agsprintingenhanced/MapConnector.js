@@ -18,11 +18,18 @@ define([
         "dojo/_base/lang",
         "dojo/aspect",
         "ct/_Connect",
+        "ct/_lang",
         "ct/util/css",
+        "ct/mapping/geometry",
         "./PrintPreview",
+        "esri/config",
+        "esri/units",
+        "esri/geometry/Polyline",
+        "esri/geometry/webMercatorUtils",
+        "esri/geometry/geodesicUtils",
         "agsprinting/PrintPreviewWidgetController"
     ],
-    function (declare, d_lang, d_aspect, _Connect, ct_css, PrintPreview, PrintPreviewWidgetController) {
+    function (declare, d_lang, d_aspect, _Connect, ct_lang, ct_css, geometry, PrintPreview, esri_config, esri_units, Polyline, webMercatorUtils, geodesicUtils, PrintPreviewWidgetController) {
         return declare([_Connect],
             {
                 mapState: null,
@@ -77,10 +84,9 @@ define([
                     }
 
                     var centerPoint = latestPrintPreview && latestPrintPreview.centerPoint || this.mapState.getExtent().getCenter();
-                    var currentScale = Math.round(this.mapState.getViewPort().getScale());
                     var scale = widgetParams.scale;
                     if (scale === -1) {
-                        scale = currentScale;
+                        scale = Math.round(this._getScale());
                     }
 
                     var printPreview = new PrintPreview({
@@ -93,13 +99,14 @@ define([
                     this._latestPrintPreview = printPreview;
 
                     var renderedGraphics = renderer.showDefaultGraphics(printPreview);
-                    var firstGeometry = renderedGraphics[0].geometry;
+                    renderer._graphicsRenderer.graphicsNode.refresh();
+                    var polygon = renderedGraphics[0].geometry;
                     if (!noZoom) {
                         // change map extent
-                        this._checkPolygonAndMapExtent(firstGeometry);
+                        this._checkPolygonAndMapExtent(polygon);
                     }
-                    printPreview.set("extent", firstGeometry.getExtent());
-                    printPreview.set("geometry", firstGeometry);
+                    printPreview.set("extent", polygon.getExtent());
+                    printPreview.set("geometry", polygon);
 
                     return printPreview;
                 },
@@ -109,15 +116,32 @@ define([
                 },
 
                 _checkPolygonAndMapExtent: function (polygon) {
-                    //var polygonCenter = polygon.getCentroid();
-                    //this.mapState.centerAt(polygonCenter);
-                    var extent = polygon.getExtent();
-                    /*var mapExtent = this.mapState.getExtent();
-                    if (!mapExtent.contains(polygonExtent)) {
-                        var unionExtent = mapExtent.union(polygonExtent).expand(1.0);
-                        this.mapState.setExtent(unionExtent);
-                    }*/
-                    this.mapState.setExtent(extent);
+                    if (polygon) {
+                        var extent = polygon.getExtent();
+                        this.mapState.setExtent(extent);
+                    }
+                },
+
+                _getScale: function () {
+                    var properties = this._properties || {};
+                    var fixScale = ct_lang.chkProp(properties, "fixScale", true);
+                    var viewport = this.mapState.getViewPort();
+                    var screen = viewport.getScreen();
+                    var geo = viewport.getGeo();
+                    var spatialReference = geo.spatialReference;
+                    var isWebMercator = geometry.isWebMercator(spatialReference);
+                    if (!isWebMercator || !fixScale) {
+                        return viewport.getScale();
+                    }
+                    var centimeters = esri_units.CENTIMETERS;
+                    var screenDPI = esri_config.defaults.screenDPI;
+                    var line = new Polyline(spatialReference);
+                    var lowerLeft = geometry.createPoint(geo.xmin, geo.ymin, spatialReference);
+                    var lowerRight = geometry.createPoint(geo.xmax, geo.ymin, spatialReference);
+                    line.addPath([lowerLeft, lowerRight]);
+                    line = webMercatorUtils.webMercatorToGeographic(line);
+                    var length = geodesicUtils.geodesicLengths([line], centimeters)[0];
+                    return (length / screen.getWidth()) * (screenDPI / 2.54);
                 },
 
                 remove: function () {

@@ -34,6 +34,9 @@ define([
 
                 activate: function () {
                     this._graphicsRenderer = GraphicsRenderer.createForGraphicsNode("printPreview", this.mapModel);
+                    this.mapModel.fireModelStructureChanged({
+                        source: this
+                    });
                 },
 
                 showDefaultGraphics: function (printPreview) {
