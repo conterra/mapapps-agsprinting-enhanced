@@ -18,10 +18,7 @@ define([
     "ct/array",
     "ct/_Connect",
     "agsprinting/PrintPreviewWidgetController"
-], function (declare,
-             ct_array,
-             _Connect,
-             PrintPreviewWidgetController) {
+], function (declare, ct_array, _Connect, PrintPreviewWidgetController) {
     return declare([_Connect], {
         activate: function () {
             this.inherited(arguments);
@@ -32,25 +29,64 @@ define([
             printPreviewWidgetController.prototype._getPrintSize = this._getPrintSize;
             printPreviewWidgetController.prototype.drawTemplateDimensions = this.drawTemplateDimensions;
         },
+
         newActivate: function (componentContext) {
+            var that = this;
             this.inherited(arguments);
             this._bundleContext = componentContext.getBundleContext();
 
-            this.connect(this._printDialog.Layout_Template, "onChange", this.drawTemplateDimensions);
-            this.connect(this._printDialog.scaleNode, "onChange", this.drawTemplateDimensions);
-            this.connect(this._printDialog.rotationSpinner, "onChange", this.changeRotation);
-            this.connect(this._printDialog.templateCheckbox, "onChange", this.drawTemplateDimensions);
-            this.connect(this._printDialog.scaleSelect, "onChange", this.drawTemplateDimensions);
-            this.connect(this._printDialog, "populateGUI", this.drawTemplateDimensions);
-            this.connect(this._agsPrintTool, "onActivate", this.drawTemplateDimensions);
-            this.connect(this._agsPrintTool, "onDeactivate", this.hideWidget);
+            if (this._printDialog.scaleSelect.value === -1) {
+                this.connect("zoomConnect", this._mapState, "onZoomEnd", function (scale) {
+                    setTimeout(function () {
+                        that.drawTemplateDimensions(true);
+                    }, 500);
+                });
+            }
+
+            this.connect(this._printDialog.Layout_Template, "onChange", function () {
+                this.drawTemplateDimensions(false);
+            });
+            this.connect(this._printDialog.scaleNode, "onChange", function () {
+                this.drawTemplateDimensions(false);
+            });
+            this.connect(this._printDialog.rotationSpinner, "onChange", function () {
+                this.changeRotation();
+            });
+            this.connect(this._printDialog.templateCheckbox, "onChange", function () {
+                this.drawTemplateDimensions(false);
+            });
+            this.connect(this._printDialog.scaleSelect, "onChange", function (value) {
+                if (value === -1) {
+                    this.connect("zoomConnect", this._mapState, "onZoomEnd", function (scale) {
+                        setTimeout(function () {
+                            that.drawTemplateDimensions(true);
+                        }, 500);
+                    });
+                } else {
+                    this.disconnect("zoomConnect");
+                }
+                this.drawTemplateDimensions();
+            });
+            this.connect(this._printDialog, "populateGUI", function () {
+                this.drawTemplateDimensions(false);
+            });
+            this.connect(this._agsPrintTool, "onActivate", function () {
+                this.drawTemplateDimensions(false);
+            });
+            this.connect(this._agsPrintTool, "onDeactivate", function () {
+                this.hideWidget();
+            });
         },
+
         showWidget: function () {
         },
+
         hideWidget: function () {
         },
+
         changeRotation: function () {
         },
+
         _getPrintSize: function (template, templateInfos) {
             var printSize = {};
 
@@ -85,7 +121,8 @@ define([
 
             return printSize;
         },
-        drawTemplateDimensions: function () {
+
+        drawTemplateDimensions: function (noZoom) {
             var printDialog = this._printDialog;
             if (!this._printController._templateInfos) {
                 return;
@@ -111,7 +148,7 @@ define([
                 scale: scale
             };
 
-            this.showWidget(widgetParams);
+            this.showWidget(widgetParams, noZoom);
         }
     });
 });

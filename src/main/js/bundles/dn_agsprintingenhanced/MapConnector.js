@@ -33,14 +33,14 @@ define([
                 },
 
                 activate: function () {
-                    this.connect(PrintPreviewWidgetController.prototype, "showWidget", function (widgetParams) {
-                        this.addToMap(widgetParams);
+                    this.connect(PrintPreviewWidgetController.prototype, "showWidget", function (widgetParams, noZoom) {
+                        this.addToMap(widgetParams, false, noZoom);
                     });
                     this.connect(PrintPreviewWidgetController.prototype, "changeRotation", function (rotation) {
                         var latestPrintPreview = this._latestPrintPreview;
                         if (latestPrintPreview && latestPrintPreview.printFormat) {
                             latestPrintPreview.printFormat.rotation = rotation;
-                            this.addToMap(latestPrintPreview.printFormat, true);
+                            this.addToMap(latestPrintPreview.printFormat, true, false);
                         }
                     });
                     this.connect(PrintPreviewWidgetController.prototype, "hideWidget", function () {
@@ -65,10 +65,11 @@ define([
                     });
                 },
 
-                addToMap: function (widgetParams, onlyRotation) {
+                addToMap: function (widgetParams, onlyRotation, noZoom) {
                     var renderer = this.printPreviewRenderer;
                     var latestPrintPreview = this._latestPrintPreview;
                     if (latestPrintPreview && !onlyRotation) {
+                        // use last rotation
                         widgetParams.rotation = latestPrintPreview.rotation;
                     }
                     if (latestPrintPreview && !latestPrintPreview.get("isPrinted")) {
@@ -93,7 +94,10 @@ define([
 
                     var renderedGraphics = renderer.showDefaultGraphics(printPreview);
                     var firstGeometry = renderedGraphics[0].geometry;
-                    this._checkPolygonAndMapExtent(firstGeometry);
+                    if (!noZoom) {
+                        // change map extent
+                        this._checkPolygonAndMapExtent(firstGeometry);
+                    }
                     printPreview.set("extent", firstGeometry.getExtent());
                     printPreview.set("geometry", firstGeometry);
 
@@ -107,13 +111,13 @@ define([
                 _checkPolygonAndMapExtent: function (polygon) {
                     //var polygonCenter = polygon.getCentroid();
                     //this.mapState.centerAt(polygonCenter);
-                    var polygonExtent = polygon.getExtent();
+                    var extent = polygon.getExtent();
                     /*var mapExtent = this.mapState.getExtent();
                     if (!mapExtent.contains(polygonExtent)) {
                         var unionExtent = mapExtent.union(polygonExtent).expand(1.0);
                         this.mapState.setExtent(unionExtent);
                     }*/
-                    this.mapState.setExtent(polygonExtent);
+                    this.mapState.setExtent(extent);
                 },
 
                 remove: function () {
