@@ -18,6 +18,7 @@
       "windowmanager@^3.x",
       "toolset@^3.x",
       "toolrules@^3.x",
+      "custominfo@^3.x",
       "basemaptoggler@^3.x",
       "console@^3.x",
       "banner@^3.x",
@@ -134,6 +135,36 @@
         "imagePosition": "above",
         "link": "http://developernetwork.conterra.de"
       }
+    },
+    "custominfo": {
+      "CustomInfoToggleTool": [
+        {
+          "id": "customInfoTool",
+          "activateOnStartup": true,
+          "title": "Information",
+          "tooltip": "Information",
+          "iconClass": "icon-custom-info-info",
+          "toolClass": "ctInfo",
+          "togglable": true,
+          "widgetSettings": {
+            "content": "This app shows the functionality of the AGSPrinting Enhanced Bundle that extends the ArcGIS Server Printing.",
+            "window": {
+              "title": "Information",
+              "marginBox": {
+                "w": 300,
+                "h": 100,
+                "l": 20,
+                "b": 70
+              },
+              "draggable": true,
+              "closable": true,
+              "modal": false,
+              "maximizable": false,
+              "resizable": false
+            }
+          }
+        }
+      ]
     },
     "toolset": {
       "ToolsetManager": {
