@@ -124,6 +124,15 @@
       "PrintPreviewRenderer": {
         "enableUprightDirectionIndicatorGraphic": true
       },
+      "PrintPreviewEditor": {
+        "saveAfterMove": false,
+        "editModes": [
+          [
+            "ROTATE",
+            "MOVE"
+          ]
+        ]
+      },
       "HelpWidgetFactory": {
         "content": "<div>Hier kann ein vordefinierter Text stehen.</div>"
       }
