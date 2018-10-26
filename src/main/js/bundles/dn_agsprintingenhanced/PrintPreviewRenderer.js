@@ -34,6 +34,9 @@ define([
 
                 activate: function () {
                     this._graphicsRenderer = GraphicsRenderer.createForGraphicsNode("printPreview", this.mapModel);
+                    this._graphicsRenderer.get("graphicsNode").set("renderPriority", 100);
+                    this._graphicsRenderer2 = GraphicsRenderer.createForGraphicsNode("printPreview2", this.mapModel);
+                    this._graphicsRenderer2.get("graphicsNode").set("renderPriority", 10);
                     this.mapModel.fireModelStructureChanged({
                         source: this
                     });
@@ -45,16 +48,12 @@ define([
                 },
 
                 showEditingGraphics: function () {
-                    var graphicsRenderer = this._graphicsRenderer;
+                    var graphicsRenderer2 = this._graphicsRenderer2;
 
                     if (!this.printPreview) {
                         return;
                     }
-
-                    // Only keep the first graphic
-                    for (var i = 1; i < this.renderedGraphics.length; i++) {
-                        graphicsRenderer.erase(this.renderedGraphics[i]);
-                    }
+                    graphicsRenderer2.erase(this.renderedGraphics[1]);
                 },
 
                 showInactiveGraphics: function (printPreview) {
@@ -80,22 +79,26 @@ define([
 
                 _removeGraphics: function () {
                     var graphicsRenderer = this._graphicsRenderer;
+                    var graphicsRenderer2 = this._graphicsRenderer2;
 
                     if (!this.printPreview) {
                         return;
                     }
-                    d_array.forEach(this.renderedGraphics, function (graphic) {
-                        graphicsRenderer.erase(graphic);
-                    });
+                    graphicsRenderer.erase(this.renderedGraphics[0]);
+                    graphicsRenderer2.erase(this.renderedGraphics[1]);
                     this.renderedGraphics = [];
                 },
 
                 _renderGraphics: function (graphics) {
                     var graphicsRenderer = this._graphicsRenderer;
-
-                    return d_array.map(graphics, function (graphic) {
-                        return graphicsRenderer.draw(graphic);
-                    });
+                    var graphicsRenderer2 = this._graphicsRenderer2;
+                    var graphicResults = [];
+                    if (graphics[0]) {
+                        graphicResults.push(graphicsRenderer.draw(graphics[0]));
+                    } else {
+                        graphicResults.push(graphicsRenderer2.draw(graphics[1]));
+                    }
+                    return graphicResults;
                 },
 
                 _getGraphicsBuilder: function (printPreview) {
