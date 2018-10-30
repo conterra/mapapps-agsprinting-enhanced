@@ -241,7 +241,7 @@
     "toolrules": {
       "ToolActiveStateManager": {
         "activateOnStartToolIds": [
-          //"agsprinttool"
+          "agsprinttool"
         ]
       }
     },
