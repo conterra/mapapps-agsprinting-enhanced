@@ -163,7 +163,7 @@
                 "w": 300,
                 "h": 100,
                 "l": 20,
-                "b": 70
+                "b": 120
               },
               "draggable": true,
               "closable": true,
@@ -241,7 +241,7 @@
     "toolrules": {
       "ToolActiveStateManager": {
         "activateOnStartToolIds": [
-          "agsprinttool"
+          //"agsprinttool"
         ]
       }
     },
