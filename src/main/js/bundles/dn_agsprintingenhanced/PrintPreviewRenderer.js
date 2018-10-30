@@ -93,9 +93,10 @@ define([
                     var graphicsRenderer = this._graphicsRenderer;
                     var graphicsRenderer2 = this._graphicsRenderer2;
                     var graphicResults = [];
-                    if (graphics[0]) {
+                    if (graphics.length === 1) {
                         graphicResults.push(graphicsRenderer.draw(graphics[0]));
                     } else {
+                        graphicResults.push(graphicsRenderer.draw(graphics[0]));
                         graphicResults.push(graphicsRenderer2.draw(graphics[1]));
                     }
                     return graphicResults;
