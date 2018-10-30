@@ -30,14 +30,14 @@ define([
             printPreviewWidgetController.prototype._getTemplateInfos = this._getTemplateInfos;
             printPreviewWidgetController.prototype._getPrintSize = this._getPrintSize;
             printPreviewWidgetController.prototype._connectToMethods = this._connectToMethods;
+            printPreviewWidgetController.prototype._connectToZoom = this._connectToZoom;
+            printPreviewWidgetController.prototype._disconnectFromZoom = this._disconnectFromZoom;
         },
 
         newActivate: function (componentContext) {
             var that = this;
             this.inherited(arguments);
             this._bundleContext = componentContext.getBundleContext();
-
-            that._connectToMethods();
 
             this.connect(that._agsPrintTool, "onActivate", function () {
                 if (that._printDialog.scaleSelect.value === -1) {
@@ -50,18 +50,16 @@ define([
             this.connect(that._agsPrintTool, "onDeactivate", function () {
                 that.hideWidget();
                 that.con.disconnect();
+                that._disconnectFromZoom();
             });
         },
 
         _connectToMethods: function () {
             var that = this;
             this.con = new _Connect();
+            this.zoomCon = new _Connect();
             if (that._printDialog.scaleSelect.value === -1) {
-                that.con.connect("zoomConnect", that._mapState, "onZoomEnd", function (scale) {
-                    setTimeout(function () {
-                        that.drawTemplateDimensions(true);
-                    }, 500);
-                });
+                that._connectToZoom();
             }
 
             that.con.connect(that._printDialog.Layout_Template, "onChange", function () {
@@ -78,15 +76,12 @@ define([
             });
             that.con.connect(that._printDialog.scaleSelect, "onChange", function (value) {
                 if (value === -1) {
-                    that.con.connect("zoomConnect", that._mapState, "onZoomEnd", function (scale) {
-                        setTimeout(function () {
-                            that.drawTemplateDimensions(true);
-                        }, 500);
-                    });
+                    that._disconnectFromZoom();
+                    that._connectToZoom();
                     that.drawTemplateDimensions(true);
                 } else {
-                    that.drawTemplateDimensions();
-                    that.con.disconnect("zoomConnect");
+                    that._disconnectFromZoom();
+                    that.drawTemplateDimensions(false);
                 }
             });
             that.con.connect(that._printDialog, "populateGUI", function () {
@@ -174,6 +169,19 @@ define([
 
         _getTemplateInfos: function () {
             return this._printController._templateInfos || this._printController.getPrintInfos().templateInfos
+        },
+
+        _connectToZoom: function () {
+            var that = this;
+            this.zoomCon.connect(this._mapState, "onZoomEnd", function (scale) {
+                setTimeout(function () {
+                    that.drawTemplateDimensions(true);
+                }, 100);
+            });
+        },
+
+        _disconnectFromZoom: function () {
+            this.zoomCon.disconnect();
         }
     });
 });
