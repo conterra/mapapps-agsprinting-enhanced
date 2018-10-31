@@ -126,6 +126,7 @@
       },
       "PrintPreviewEditor": {
         "saveAfterMove": false,
+        "saveAfterRotate": false,
         "editModes": [
           [
             "ROTATE",
