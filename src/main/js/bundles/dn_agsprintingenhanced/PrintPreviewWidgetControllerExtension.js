@@ -38,6 +38,7 @@ define([
             var that = this;
             this.inherited(arguments);
             this._bundleContext = componentContext.getBundleContext();
+            that._connectToMethods();
 
             this.connect(that._agsPrintTool, "onActivate", function () {
                 if (that._printDialog.scaleSelect.value === -1) {
@@ -50,14 +51,17 @@ define([
             this.connect(that._agsPrintTool, "onDeactivate", function () {
                 that.hideWidget();
                 that.con.disconnect();
+                that.con = null;
                 that._disconnectFromZoom();
             });
         },
 
         _connectToMethods: function () {
             var that = this;
+            if (this.con) {
+                return;
+            }
             this.con = new _Connect();
-            this.zoomCon = new _Connect();
             if (that._printDialog.scaleSelect.value === -1) {
                 that._connectToZoom();
             }
@@ -172,6 +176,10 @@ define([
         },
 
         _connectToZoom: function () {
+            if (this.zoomCon) {
+                return;
+            }
+            this.zoomCon = new _Connect();
             var that = this;
             this.zoomCon.connect(this._mapState, "onZoomEnd", function (scale) {
                 setTimeout(function () {
@@ -181,7 +189,10 @@ define([
         },
 
         _disconnectFromZoom: function () {
-            this.zoomCon.disconnect();
+            if (this.zoomCon) {
+                this.zoomCon.disconnect();
+                this.zoomCon = null;
+            }
         }
     });
 });
