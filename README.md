@@ -109,6 +109,7 @@ Simply add the bundle "dn_agsprintingenhanced" to your app.
 "PrintPreviewEditor": {
     // save the print preview after move
     "saveAfterMove": false,
+    "saveAfterRotate": false,
     // change the editing modes
     "editModes": [
         [

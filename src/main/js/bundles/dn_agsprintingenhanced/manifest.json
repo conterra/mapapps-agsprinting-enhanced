@@ -105,6 +105,7 @@
       "impl": "./PrintPreviewEditor",
       "properties": {
         "saveAfterMove": false,
+        "saveAfterRotate": false,
         "editModes": [
           [
             "ROTATE",

@@ -100,24 +100,32 @@ define([
 
                 _startEditing: function (printPreview, graphic) {
                     var that = this;
-                    if (this._properties.saveAfterMove) {
-                        var con = this.connect(graphic.getNode(), "click", function () {
-                            that._stopEditing(printPreview);
-                            that._editedPrintPreview = null;
-                            con.disconnect();
-                        });
-                    }
                     var editStateController = this.editStateController;
                     var renderer = this.printPreviewRenderer;
 
                     editStateController.activateEditing({
                         editModes: this._properties.editModes
                     });
-                    graphic.setSymbol(jsonUtils.fromJson(this.editingSymbol));
 
+                    graphic.setSymbol(jsonUtils.fromJson(this.editingSymbol));
                     editStateController.editGraphic({graphic: graphic});
                     this._editedGraphic = graphic;
                     renderer.showEditingGraphics();
+
+                    if (this._properties.saveAfterMove) {
+                        var moveCon = this.connect(editStateController._editToolbar, "onGraphicMoveStop", function () {
+                            that._stopEditing(printPreview);
+                            that._editedPrintPreview = null;
+                            moveCon.disconnect();
+                        });
+                    }
+                    if (this._properties.saveAfterRotate) {
+                        var rotateCon = this.connect(editStateController._editToolbar, "onRotateStop", function () {
+                            that._stopEditing(printPreview);
+                            that._editedPrintPreview = null;
+                            rotateCon.disconnect();
+                        });
+                    }
                 },
 
                 _stopEditing: function (printPreview) {
