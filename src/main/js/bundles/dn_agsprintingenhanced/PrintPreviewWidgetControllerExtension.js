@@ -175,7 +175,7 @@ define([
         },
 
         _getTemplateInfos: function () {
-            return this._printController._templateInfos || this._printController.getPrintInfos().templateInfos
+            return this._printController._templateInfos || this._printController.getTemplateInfos();
         },
 
         _connectToZoom: function () {
