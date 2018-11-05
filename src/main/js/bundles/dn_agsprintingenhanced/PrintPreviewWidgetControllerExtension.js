@@ -16,9 +16,10 @@
 define([
     "dojo/_base/declare",
     "ct/array",
+    "ct/_when",
     "ct/_Connect",
     "agsprinting/PrintPreviewWidgetController"
-], function (declare, ct_array, _Connect, PrintPreviewWidgetController) {
+], function (declare, ct_array, ct_when, _Connect, PrintPreviewWidgetController) {
     return declare([_Connect], {
         activate: function () {
             this.inherited(arguments);
@@ -153,29 +154,36 @@ define([
                 return;
             }
 
+            var that = this;
             var scale = printDialog.scaleSelect.get("value");
-            var templateInfos = ct_array.arraySearchFirst(this._getTemplateInfos(), {
-                layoutTemplate: template
+            ct_when(that._getTemplateInfos(), function (infos) {
+                var templateInfos = ct_array.arraySearchFirst(infos, {
+                    layoutTemplate: template
+                });
+                if (!templateInfos) {
+                    return;
+                }
+                var printSize = that._getPrintSize(template, templateInfos);
+                var width = printSize.width;
+                var height = printSize.height;
+
+                var widgetParams = {
+                    width: width,
+                    height: height,
+                    rotation: 0,
+                    scale: scale
+                };
+
+                that.showWidget(widgetParams, noZoom);
             });
-            if (!templateInfos) {
-                return;
-            }
-            var printSize = this._getPrintSize(template, templateInfos);
-            var width = printSize.width;
-            var height = printSize.height;
-
-            var widgetParams = {
-                width: width,
-                height: height,
-                rotation: 0,
-                scale: scale
-            };
-
-            this.showWidget(widgetParams, noZoom);
         },
 
         _getTemplateInfos: function () {
-            return this._printController._templateInfos || this._printController.getTemplateInfos();
+            if (this._printController.getTemplateInfos) {
+                return this._printController.getTemplateInfos();
+            } else {
+                return this._printController.getPrintInfos().templateInfos;
+            }
         },
 
         _connectToZoom: function () {
