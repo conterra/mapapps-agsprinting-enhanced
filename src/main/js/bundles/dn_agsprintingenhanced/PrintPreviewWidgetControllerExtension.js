@@ -157,6 +157,9 @@ define([
             var templateInfos = ct_array.arraySearchFirst(this._getTemplateInfos(), {
                 layoutTemplate: template
             });
+            if (!templateInfos) {
+                return;
+            }
             var printSize = this._getPrintSize(template, templateInfos);
             var width = printSize.width;
             var height = printSize.height;
