@@ -11,21 +11,19 @@ AGS Printing documentation: https://developernetwork.conterra.de/en/documentatio
 ![alt text](https://github.com/conterra/mapapps-agsprinting-enhanced/blob/master/samplePrint.jpg?s=200)
 
 
-Sample App
-------------------
+## Sample App
 https://demos.conterra.de/mapapps/resources/apps/downloads_agsprinting_enhanced/index.html
 
-Installation Guide
-------------------
+## Installation Guide
 **Requirements:**
 - map.apps 3.9.0 or later
 - ArcGIS Server 10.4 or later
 
 Simply add the bundle "dn_agsprintingenhanced" to your app.
 
-#### Configurable Components of dn_agsprintingenhanced:
+### Configurable Components of dn_agsprintingenhanced:
 
-##### PrintDialogExtension:
+#### PrintDialogExtension:
 ```
 "PrintDialogExtension": {
     // hide the DPI selection
@@ -96,7 +94,7 @@ Simply add the bundle "dn_agsprintingenhanced" to your app.
 }
 ```
 
-##### PrintPreviewRenderer:
+#### PrintPreviewRenderer:
 ```
 "PrintPreviewRenderer": {
     // enable or disable the upright direction indicator graphic
@@ -104,7 +102,7 @@ Simply add the bundle "dn_agsprintingenhanced" to your app.
 }
 ```
 
-##### PrintPreviewEditor:
+#### PrintPreviewEditor:
 ```
 "PrintPreviewEditor": {
     // save the print preview after move
@@ -120,7 +118,7 @@ Simply add the bundle "dn_agsprintingenhanced" to your app.
 }
 ```
 
-##### HelpWidgetFactory:
+#### HelpWidgetFactory:
 ```
 "HelpWidgetFactory": {
     // define the help widget content
@@ -128,13 +126,12 @@ Simply add the bundle "dn_agsprintingenhanced" to your app.
 }
 ```
 
-Development Guide
-------------------
+## Development Guide
 ### Define the mapapps remote base
 Before you can run the project you have to define the mapapps.remote.base property in the pom.xml-file:
 `<mapapps.remote.base>http://%YOURSERVER%/ct-mapapps-webapp-%VERSION%</mapapps.remote.base>`
 
-##### Other methods to to define the mapapps.remote.base property.
+### Other methods to to define the mapapps.remote.base property.
 1. Goal parameters
 `mvn install -Dmapapps.remote.base=http://%YOURSERVER%/ct-mapapps-webapp-%VERSION%`
 
